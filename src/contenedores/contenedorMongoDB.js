@@ -63,12 +63,11 @@ class ContenedorMongoDB {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
             });
-
             const deletedCount = await this.Model.deleteOne({ id: id });
             if (deletedCount.deletedCount != 0) {
                 return deletedCount;
             } else {
-                return "No se ha podido borrar el elemento";
+                return {error: "No se ha podido borrar el elemento"};
             }
         } catch (e) {
             logErr.error(e);
