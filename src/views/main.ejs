@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('partials/headerInfo', {title: 'DeraCommerce'}) %>
+</head>
+
+<body>
+  <div class="bigDiv">
+    <!-- CABECERA -->
+    <h1>Hola esto es -DERACOMMERCE-</h1>
+    <p>Esta página está en construcción! (todavía)</p>
+    <div>
+      <table class="centeredTable darkBorder">
+        <tr class="lightBg">
+          <td class="shortPadding">
+            <h3>Hola, <%= usuario.nombre %></h3>
+            <img src=<%= usuario.avatar %>>
+          </td>
+          <td>
+            <p>||| <br /> ||| <br /> |||</p>
+          </td>
+          <td class="shortPadding">
+            <p>Direccion: <%= usuario.direccion %> </p>
+            <p>Edad: <%= usuario.edad %> </p>
+            <p>Teléfono: <%= usuario.tel %> </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <form action="/logout" method="post">
+              <input type="submit" id="logoutButton" value="Desloguearse" />
+            </form>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- CARRITOS -->
+    <div>
+      <h2>Tu changuito de compras</h2>
+      <% if (carrito.productos.length == 0) { %>
+      <p>Todavía no agregaste productos a tu changuito...</p>
+      <% } else { %>
+      <table class="centeredTable">
+        <% carrito.productos.forEach(producto => { %>
+        <tr>
+          <td><%=producto.nombre%></td>
+          <td>---></td>
+          <td>$<%=producto.precio%></td>
+          <td>---+</td>
+          <td>
+            <form action="/api/carrito/<%=carrito.id%>/productos" method="post">
+              <input type="hidden" name="delete" value="delete" />
+              <input type="hidden" name="prodSlot" value="<%= producto.slot %>" />
+              <input type="submit" value="Sacar" />
+            </form>
+          </td>
+        </tr>
+        <tr></tr>
+        <% }) %>
+      </table>
+      <form action="/api/carrito/<%=carrito.id%>/confirmar" method="post">
+        <input type="submit" value="Realizar pedido" />
+      </form>
+      <% } %>
+    </div>
+    <!-- PRODUCTOS -->
+    <br />
+    <% if (productos.length > 0) { %>
+    <table class="centeredTable darkBorder" style="padding: 10px">
+      <% productos.forEach(producto => { %>
+      <tr class="lessDarkBorder">
+        <td class="lightBg">
+          <h4><%= producto.nombre %></h4>
+          <img src=<%= producto.thumbnail %> />
+          <p> <%= producto.descripcion %> </p>
+        </td>
+        <td>
+          <p>|</p>
+        </td>
+        <td>
+          <p>$<%= producto.precio %> </p>
+          <small>CÓDIGO <%= producto.codigo %></small>
+          <br />
+          <form action="/api/carrito/<%=carrito.id%>/productos" method="post">
+            <input type="hidden" name="idProd" value=<%=producto.id%>>
+            <input type="submit" value="Agregar al chango">
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </table>
+    <% } else { %>
+
+    <% } %>
+    <br />
+    <a href="/">WIP</a>
+  </div>
+</body>
+
+</html>
