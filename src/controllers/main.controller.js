@@ -1,8 +1,8 @@
-import { getMainCarrito } from "../services/main.service.js";
+import { getMainCarrito } from "../services/carritos.service.js";
 
 const getMain = async (req, res) => {
   try {
-    let carrito = await getMainCarrito(user);
+    const carrito = await getMainCarrito(req.user);
     res.status(200).render("main", {
       usuario: req.user,
       productos: await productosDao.getAll(),

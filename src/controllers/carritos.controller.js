@@ -52,10 +52,7 @@ const postCartIdProducts = async (req, res) => {
 
 const postCartConfirmar = async (req, res) => {
     const idCart = req.params.id;
-    const productos = await confirmarPedido(idCart);
-    sendOrderMail(req.user, productos);
-    sendOrderSMS(req.user, productos);
-    sendOrderWhatsapp(req.user, productos);
+    await confirmarPedido(idCart);
     res.status(200).render("pedido-confirmado");
 }
 

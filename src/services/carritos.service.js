@@ -41,7 +41,20 @@ const borrarProdDelCart = async (idCart, prodSlot) => {
 };
 
 const confirmarPedido = async (idCart) => {
-  return await carritosDao.confirmarPedido(idCart);
+  const productos = await carritosDao.confirmarPedido(idCart);
+  sendOrderMail(req.user, productos);
+  sendOrderSMS(req.user, productos);
+  sendOrderWhatsapp(req.user, productos);
+  return true;
+}
+
+const getMainCarrito = (user) => {
+  let carrito = await carritosDao.getByEmail(user.email);
+    if (!carrito || carrito.userEmail != user.email) {
+      await carritosDao.agregarCart(user.email);
+      carrito = await carritosDao.getByEmail(user.email);
+    }
+    return carrito;
 }
 
 export default {
@@ -50,5 +63,6 @@ export default {
   getCartProductsById,
   agregarProdAlCart,
   borrarProdDelCart,
-  confirmarPedido
+  confirmarPedido,
+  getMainCarrito,
 };
